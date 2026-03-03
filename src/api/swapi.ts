@@ -1,12 +1,17 @@
 const BASE_URL = 'https://swapi.dev/api'
 
-export async function fetchPlanets() {
-    const response = await fetch(`${BASE_URL}/planets/`)
+interface PlanetsResponse<T> {
+    results: T[]
+    next: string | null
+}
+
+export async function fetchPlanetsPage<T>(url = `${BASE_URL}/planets/`) {
+    const response = await fetch(url)
 
     if (!response.ok) {
         throw new Error('Erro ao buscar planetas')
     }
 
-    const data = await response.json()
-    return data.results
+    const data: PlanetsResponse<T> = await response.json()
+    return data
 }
