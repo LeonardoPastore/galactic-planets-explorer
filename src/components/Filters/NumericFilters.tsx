@@ -86,6 +86,19 @@ export function NumericFilters({
                     <button onClick={onClear}>Limpar filtros</button>
                 </>
             )}
+            <section className="space-y-3">
+                <h3 className="font-semibold text-lg">Filtros Numéricos</h3>
+
+                <div className="flex flex-wrap gap-2">
+                    <select className="bg-slate-700 p-2 rounded" />
+                    <select className="bg-slate-700 p-2 rounded" />
+                    <input className="bg-slate-700 p-2 rounded w-24" />
+                    <button className="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded">
+                        Adicionar
+                    </button>
+                </div>
+            </section>
         </section>
+
     )
 }
