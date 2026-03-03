@@ -1,6 +1,7 @@
 import { NumericFilters } from './components/NumericFilters'
 import { SortControls } from './components/SortControls'
 import { usePlanets } from './hooks/usePlanets'
+import { PlanetsTable } from './components/PlanetsTable'
 
 function App() {
   const {
@@ -79,8 +80,10 @@ function App() {
           />
         </div>
 
+        <PlanetsTable planets={planets} />
+
         {/* Lista de planetas */}
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
           {planets.map((planet) => (
             <li
               key={planet.name}
