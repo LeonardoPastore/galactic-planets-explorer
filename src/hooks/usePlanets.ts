@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { fetchPlanetsPage } from '../api/swapi'
 import { useDebounce } from './useDebounce'
+
 import type { Planet } from '../types/Planet'
 import type { NumericFilter } from '../types/NumericFilter'
+import type { SortConfig } from '../types/Sort'
 
 export function usePlanets() {
     const [planets, setPlanets] = useState<Planet[]>([])
@@ -12,6 +14,7 @@ export function usePlanets() {
     const debouncedSearch = useDebounce(search, 400)
 
     const [numericFilters, setNumericFilters] = useState<NumericFilter[]>([])
+    const [sortConfig, setSortConfig] = useState<SortConfig | null>(null)
 
     const [loading, setLoading] = useState(true)
     const [loadingMore, setLoadingMore] = useState(false)
@@ -50,10 +53,10 @@ export function usePlanets() {
     }, [])
 
     /**
-     * Aplica busca por nome + filtros numéricos
+     * 🔍 Busca + 🔢 filtros + 🔃 ordenação
      */
     const filteredPlanets = useMemo(() => {
-        let result = planets
+        let result = [...planets]
 
         // 🔍 Filtro por nome
         if (debouncedSearch) {
@@ -68,11 +71,9 @@ export function usePlanets() {
                 numericFilters.every(({ column, operator, value }) => {
                     const rawValue = planet[column]
 
-                    // ignora planetas com valor desconhecido
                     if (rawValue === 'unknown') return false
 
                     const planetValue = Number(rawValue)
-
                     if (Number.isNaN(planetValue)) return false
 
                     switch (operator) {
@@ -89,8 +90,33 @@ export function usePlanets() {
             )
         }
 
+        // 🔃 Ordenação
+        if (sortConfig) {
+            const { column, order } = sortConfig
+
+            result.sort((a, b) => {
+                const aValue = a[column]
+                const bValue = b[column]
+
+                // unknown sempre no final
+                if (aValue === 'unknown') return 1
+                if (bValue === 'unknown') return -1
+
+                if (column === 'name') {
+                    return order === 'asc'
+                        ? aValue.localeCompare(bValue)
+                        : bValue.localeCompare(aValue)
+                }
+
+                const numA = Number(aValue)
+                const numB = Number(bValue)
+
+                return order === 'asc' ? numA - numB : numB - numA
+            })
+        }
+
         return result
-    }, [planets, debouncedSearch, numericFilters])
+    }, [planets, debouncedSearch, numericFilters, sortConfig])
 
     function addNumericFilter(filter: NumericFilter) {
         setNumericFilters((prev) => [...prev, filter])
@@ -118,6 +144,9 @@ export function usePlanets() {
         addNumericFilter,
         removeNumericFilter,
         clearNumericFilters,
+
+        sortConfig,
+        setSortConfig,
 
         loadMore,
         hasMore: Boolean(nextPage),

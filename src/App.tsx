@@ -1,17 +1,23 @@
-import { NumericFilters } from './components/Filters/NumericFilters'
+import { NumericFilters } from './components/NumericFilters'
+import { SortControls } from './components/SortControls'
 import { usePlanets } from './hooks/usePlanets'
 
 function App() {
   const {
     planets,
+    loading,
+    error,
+
+    search,
+    setSearch,
+
     numericFilters,
     addNumericFilter,
     removeNumericFilter,
     clearNumericFilters,
-    search,
-    setSearch,
-    loading,
-    error,
+
+    sortConfig,
+    setSortConfig,
   } = usePlanets()
 
   if (loading) {
@@ -34,7 +40,7 @@ function App() {
     <main className="min-h-screen bg-slate-900 text-slate-100 p-6">
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Título */}
-        <header className="text-center">
+        <header className="text-center space-y-1">
           <h1 className="text-3xl font-bold tracking-wide">
             Galactic Planets Explorer
           </h1>
@@ -55,7 +61,15 @@ function App() {
           "
         />
 
-        {/* Filtros */}
+        {/* Ordenação */}
+        <div className="bg-slate-800 p-4 rounded-md">
+          <SortControls
+            value={sortConfig}
+            onChange={setSortConfig}
+          />
+        </div>
+
+        {/* Filtros numéricos */}
         <div className="bg-slate-800 p-4 rounded-md">
           <NumericFilters
             filters={numericFilters}

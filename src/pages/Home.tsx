@@ -1,4 +1,4 @@
-import { NumericFilters } from '../components/Filters/NumericFilters'
+import { NumericFilters } from '../components/NumericFilters'
 import { usePlanets } from '../hooks/usePlanets'
 
 function App() {

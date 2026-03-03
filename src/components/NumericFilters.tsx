@@ -3,7 +3,7 @@ import type {
     NumericFilter,
     NumericOperator,
     NumericColumn,
-} from '../../types/NumericFilter'
+} from '../types/NumericFilter'
 
 interface NumericFiltersProps {
     filters: NumericFilter[]
