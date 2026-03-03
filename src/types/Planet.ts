@@ -3,4 +3,6 @@ export interface Planet {
     climate: string
     terrain: string
     population: string
+    diameter: string
+    surface_water: string
 }

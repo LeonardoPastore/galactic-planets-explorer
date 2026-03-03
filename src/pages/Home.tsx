@@ -1,5 +1,6 @@
 import { usePlanets } from '../hooks/usePlanets'
 import { SearchInput } from '../components/SearchInput/SearchInput'
+import { NumericFilters } from '../components/Filters/NumericFilters'
 
 export function Home() {
     const {
@@ -11,6 +12,9 @@ export function Home() {
         loadMore,
         hasMore,
         loadingMore,
+        addNumericFilter,
+        numericFilters,
+        removeNumericFilter,
     } = usePlanets()
 
     if (loading) return <p>Carregando planetas...</p>
@@ -22,10 +26,19 @@ export function Home() {
 
             <SearchInput value={search} onChange={setSearch} />
 
+            <NumericFilters onAdd={addNumericFilter} />
+
+            {numericFilters.map((filter, index) => (
+                <p key={index}>
+                    {filter.column} {filter.operator} {filter.value}
+                    <button onClick={() => removeNumericFilter(index)}>x</button>
+                </p>
+            ))}
+
             <ul>
                 {planets.map((planet) => (
                     <li key={planet.name}>
-                        <strong>{planet.name}</strong> — {planet.climate}
+                        <strong>{planet.name}</strong> — {planet.population}
                     </li>
                 ))}
             </ul>
