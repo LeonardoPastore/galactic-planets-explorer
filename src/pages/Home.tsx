@@ -1,55 +1,31 @@
-import { usePlanets } from '../hooks/usePlanets'
-import { SearchInput } from '../components/SearchInput/SearchInput'
 import { NumericFilters } from '../components/Filters/NumericFilters'
+import { usePlanets } from '../hooks/usePlanets'
 
-export function Home() {
+function App() {
     const {
         planets,
-        loading,
-        error,
-        search,
-        setSearch,
-        loadMore,
-        hasMore,
-        loadingMore,
-        addNumericFilter,
         numericFilters,
+        addNumericFilter,
         removeNumericFilter,
+        clearNumericFilters,
     } = usePlanets()
 
-    if (loading) return <p>Carregando planetas...</p>
-    if (error) return <p>{error}</p>
-
     return (
-        <div>
-            <h1>🌌 Galactic Planets Explorer</h1>
-
-            <SearchInput value={search} onChange={setSearch} />
-
-            <NumericFilters onAdd={addNumericFilter} />
-
-            {numericFilters.map((filter) => (
-                <button
-                    key={filter.column}
-                    onClick={() => removeNumericFilter(filter.column)}
-                >
-                    Remover
-                </button>
-            ))}
+        <>
+            <NumericFilters
+                filters={numericFilters}
+                onAdd={addNumericFilter}
+                onRemove={removeNumericFilter}
+                onClear={clearNumericFilters}
+            />
 
             <ul>
                 {planets.map((planet) => (
-                    <li key={planet.name}>
-                        <strong>{planet.name}</strong> — {planet.population}
-                    </li>
+                    <li key={planet.name}>{planet.name}</li>
                 ))}
             </ul>
-
-            {hasMore && (
-                <button onClick={loadMore} disabled={loadingMore}>
-                    {loadingMore ? 'Carregando...' : 'Carregar mais'}
-                </button>
-            )}
-        </div>
+        </>
     )
 }
+
+export default App
