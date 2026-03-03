@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { fetchPlanets } from '../api/swapi'
 import type { Planet } from '../types/Planet'
 
 export function usePlanets() {
     const [planets, setPlanets] = useState<Planet[]>([])
+    const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
@@ -22,5 +23,17 @@ export function usePlanets() {
         loadPlanets()
     }, [])
 
-    return { planets, loading, error }
+    const filteredPlanets = useMemo(() => {
+        return planets.filter((planet) =>
+            planet.name.toLowerCase().includes(search.toLowerCase())
+        )
+    }, [planets, search])
+
+    return {
+        planets: filteredPlanets,
+        loading,
+        error,
+        search,
+        setSearch,
+    }
 }
