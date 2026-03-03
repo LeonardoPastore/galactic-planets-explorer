@@ -28,11 +28,13 @@ export function Home() {
 
             <NumericFilters onAdd={addNumericFilter} />
 
-            {numericFilters.map((filter, index) => (
-                <p key={index}>
-                    {filter.column} {filter.operator} {filter.value}
-                    <button onClick={() => removeNumericFilter(index)}>x</button>
-                </p>
+            {numericFilters.map((filter) => (
+                <button
+                    key={filter.column}
+                    onClick={() => removeNumericFilter(filter.column)}
+                >
+                    Remover
+                </button>
             ))}
 
             <ul>

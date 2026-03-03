@@ -4,11 +4,6 @@ import { useDebounce } from './useDebounce'
 import type { Planet } from '../types/Planet'
 import type { NumericFilter } from '../types/NumericFilter'
 
-function toNumber(value: string) {
-    if (value === 'unknown') return null
-    return Number(value)
-}
-
 export function usePlanets() {
     const [planets, setPlanets] = useState<Planet[]>([])
     const [nextPage, setNextPage] = useState<string | null>(null)
@@ -50,52 +45,82 @@ export function usePlanets() {
         }
     }
 
-    function addNumericFilter(filter: NumericFilter) {
-        setNumericFilters((prev) => [...prev, filter])
-    }
-
-    function removeNumericFilter(index: number) {
-        setNumericFilters((prev) => prev.filter((_, i) => i !== index))
-    }
-
     useEffect(() => {
         loadInitial()
     }, [])
 
+    /**
+     * Aplica busca por nome + filtros numéricos
+     */
     const filteredPlanets = useMemo(() => {
         let result = planets
 
-        // filtro por nome (debounce)
-        result = result.filter((planet) =>
-            planet.name.toLowerCase().includes(debouncedSearch.toLowerCase())
-        )
+        // 🔍 Filtro por nome
+        if (debouncedSearch) {
+            result = result.filter((planet) =>
+                planet.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+            )
+        }
 
-        // filtros numéricos
-        numericFilters.forEach(({ column, operator, value }) => {
-            result = result.filter((planet) => {
-                const planetValue = toNumber(planet[column])
-                if (planetValue === null) return false
+        // 🔢 Filtros numéricos
+        if (numericFilters.length > 0) {
+            result = result.filter((planet) =>
+                numericFilters.every(({ column, operator, value }) => {
+                    const rawValue = planet[column]
 
-                if (operator === '>') return planetValue > value
-                if (operator === '<') return planetValue < value
-                return planetValue === value
-            })
-        })
+                    // ignora planetas com valor desconhecido
+                    if (rawValue === 'unknown') return false
+
+                    const planetValue = Number(rawValue)
+
+                    if (Number.isNaN(planetValue)) return false
+
+                    switch (operator) {
+                        case '>':
+                            return planetValue > value
+                        case '<':
+                            return planetValue < value
+                        case '=':
+                            return planetValue === value
+                        default:
+                            return true
+                    }
+                })
+            )
+        }
 
         return result
     }, [planets, debouncedSearch, numericFilters])
+
+    function addNumericFilter(filter: NumericFilter) {
+        setNumericFilters((prev) => [...prev, filter])
+    }
+
+    function removeNumericFilter(column: NumericFilter['column']) {
+        setNumericFilters((prev) =>
+            prev.filter((filter) => filter.column !== column)
+        )
+    }
+
+    function clearNumericFilters() {
+        setNumericFilters([])
+    }
 
     return {
         planets: filteredPlanets,
         loading,
         error,
+
         search,
         setSearch,
+
+        numericFilters,
+        addNumericFilter,
+        removeNumericFilter,
+        clearNumericFilters,
+
         loadMore,
         hasMore: Boolean(nextPage),
         loadingMore,
-        addNumericFilter,
-        removeNumericFilter,
-        numericFilters,
     }
 }
