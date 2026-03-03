@@ -13,7 +13,7 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
     return (
         <input
             type="text"
-            placeholder="Buscar planeta pelo nome..."
+            placeholder="Buscar planeta pelo nome (com debounce)"
             value={value}
             onChange={handleChange}
         />

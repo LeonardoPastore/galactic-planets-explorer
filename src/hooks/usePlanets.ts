@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { fetchPlanetsPage } from '../api/swapi'
+import { useDebounce } from './useDebounce'
 import type { Planet } from '../types/Planet'
 
 export function usePlanets() {
     const [planets, setPlanets] = useState<Planet[]>([])
     const [nextPage, setNextPage] = useState<string | null>(null)
     const [search, setSearch] = useState('')
+    const debouncedSearch = useDebounce(search, 400)
+
     const [loading, setLoading] = useState(true)
     const [loadingMore, setLoadingMore] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -44,9 +47,9 @@ export function usePlanets() {
 
     const filteredPlanets = useMemo(() => {
         return planets.filter((planet) =>
-            planet.name.toLowerCase().includes(search.toLowerCase())
+            planet.name.toLowerCase().includes(debouncedSearch.toLowerCase())
         )
-    }, [planets, search])
+    }, [planets, debouncedSearch])
 
     return {
         planets: filteredPlanets,
