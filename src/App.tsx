@@ -2,6 +2,8 @@ import { NumericFilters } from './components/NumericFilters'
 import { SortControls } from './components/SortControls'
 import { usePlanets } from './hooks/usePlanets'
 import { PlanetsTable } from './components/PlanetsTable'
+import { PlanetsTableSkeleton } from './components/PlanetsTableSkeleton'
+import { PlanetCardSkeleton } from './components/PlanetCardSkeleton'
 
 function App() {
   const {
@@ -23,9 +25,17 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
-        Carregando planetas...
-      </div>
+      <main className="min-h-screen bg-slate-900 text-slate-100 p-6">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <PlanetsTableSkeleton />
+
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <PlanetCardSkeleton key={i} />
+            ))}
+          </ul>
+        </div>
+      </main>
     )
   }
 
