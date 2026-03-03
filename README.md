@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# 🌌 Galactic Planets Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📖 Sobre o projeto
+O **Galactic Planets Explorer** é uma aplicação web desenvolvida com **React + TypeScript** que consome a API pública de Star Wars para listar, pesquisar e explorar planetas do universo galáctico.
 
-Currently, two official plugins are available:
+O projeto foi construído com foco em **boas práticas de front-end**, organização de código, arquitetura moderna e experiência do usuário, servindo como um **projeto de portfólio profissional**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🎯 Objetivos
+- Demonstrar domínio de React moderno
+- Aplicar boas práticas de Clean Code e separação de responsabilidades
+- Consumir APIs externas de forma eficiente
+- Criar uma base escalável para evolução futura
+- Servir como projeto real de portfólio (não acadêmico)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Funcionalidades (MVP)
+- Listagem de planetas
+- Consumo da API pública SWAPI
+- Estados de loading e erro
+- Arquitetura baseada em hooks
+- Código tipado com TypeScript
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🔮 Próximas funcionalidades
+- Busca por nome
+- Filtros avançados
+- Ordenação de dados
+- Paginação
+- Melhorias de UX/UI
+- Testes automatizados
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠️ Tecnologias utilizadas
+- React 18
+- Vite 8 (beta)
+- TypeScript
+- JavaScript moderno (ESM)
+- ESLint
+- API pública SWAPI
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📂 Estrutura do projeto
+```txt
+src/
+ ├── api/          # Comunicação com APIs externas
+ ├── components/   # Componentes reutilizáveis
+ ├── hooks/        # Hooks customizados
+ ├── pages/        # Páginas da aplicação
+ ├── types/        # Tipagens TypeScript
+ ├── App.tsx
+ └── main.tsx
